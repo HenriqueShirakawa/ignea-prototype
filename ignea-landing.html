@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IGNEA — Encontre profissionais e empresas com histórico comprovado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2E424B;
+  --secondary:#4E86AA;
+  --light:#C6DAE2;
+  --warm:#F6EFE2;
+  --bg:#FFFFFF;
+  --ink:#2E424B;
+  --muted:#6B7E86;
+  --line:#E7EDF0;
+  --radius:8px;
+  --shadow-sm:0 1px 2px rgba(46,66,75,.04), 0 1px 3px rgba(46,66,75,.05);
+  --shadow-md:0 4px 16px rgba(46,66,75,.06), 0 12px 32px rgba(46,66,75,.05);
+  --shadow-lg:0 20px 60px rgba(46,66,75,.10);
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  color:var(--ink);
+  background:var(--bg);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,.font-display{font-family:'Montserrat',sans-serif;letter-spacing:-.02em}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+a{color:inherit;text-decoration:none}
+
+/* ============ NAV ============ */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(255,255,255,.72);
+  backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s var(--ease), background .3s var(--ease);
+}
+header.scrolled{border-bottom-color:var(--line);background:rgba(255,255,255,.85)}
+nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Montserrat';font-weight:700;font-size:19px;letter-spacing:.04em}
+.logo-mark{width:30px;height:30px;flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:38px}
+.nav-links a.link{font-size:14.5px;color:var(--muted);font-weight:500;transition:color .2s}
+.nav-links a.link:hover{color:var(--primary)}
+.nav-cta{display:flex;align-items:center;gap:10px}
+
+/* ============ BUTTONS ============ */
+.btn{
+  font-family:'Inter';font-weight:600;font-size:14.5px;
+  height:48px;padding:0 22px;border-radius:var(--radius);
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  cursor:pointer;border:1px solid transparent;
+  transition:all .22s var(--ease);white-space:nowrap;
+}
+.btn-sm{height:42px;padding:0 18px;font-size:14px}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:#26373f;transform:translateY(-1px);box-shadow:0 8px 20px rgba(46,66,75,.18)}
+.btn-primary:active{transform:translateY(0)}
+.btn-ghost{background:transparent;color:var(--primary);border-color:var(--line)}
+.btn-ghost:hover{border-color:var(--secondary);background:rgba(78,134,170,.04)}
+.btn-text{background:transparent;color:var(--primary)}
+.btn-text:hover{color:var(--secondary)}
+
+/* ============ HERO ============ */
+.hero{position:relative;padding:168px 0 96px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.hero-bg::before{
+  content:"";position:absolute;top:-200px;right:-180px;width:680px;height:680px;
+  background:radial-gradient(circle, rgba(198,218,226,.55), transparent 65%);
+  border-radius:50%;filter:blur(10px);
+}
+.hero-bg::after{
+  content:"";position:absolute;bottom:-260px;left:-160px;width:560px;height:560px;
+  background:radial-gradient(circle, rgba(246,239,226,.7), transparent 68%);
+  border-radius:50%;
+}
+.hero-inner{max-width:840px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:600;color:var(--secondary);
+  background:rgba(78,134,170,.08);border:1px solid rgba(78,134,170,.16);
+  padding:7px 14px;border-radius:100px;margin-bottom:26px;letter-spacing:.01em;
+}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--secondary);box-shadow:0 0 0 4px rgba(78,134,170,.18)}
+h1.headline{font-size:clamp(38px,5.4vw,66px);font-weight:700;line-height:1.04;color:var(--primary)}
+h1.headline .accent{color:var(--secondary)}
+.subheadline{font-size:clamp(16px,1.7vw,19px);color:var(--muted);max-width:560px;margin:26px 0 0;line-height:1.65}
+.hero-ctas{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap}
+
+/* ============ SEARCH ============ */
+.searchbar{
+  margin-top:48px;max-width:780px;
+  background:#fff;border:1px solid var(--line);
+  border-radius:16px;box-shadow:var(--shadow-md);
+  display:flex;align-items:center;padding:8px;gap:4px;
+  transition:box-shadow .3s var(--ease),border-color .3s var(--ease);
+}
+.searchbar:focus-within{box-shadow:var(--shadow-lg);border-color:var(--light)}
+.search-field{flex:1;display:flex;flex-direction:column;padding:8px 18px;border-radius:10px;cursor:text;transition:background .2s;min-width:0}
+.search-field:hover{background:rgba(78,134,170,.06)}
+.search-field+.search-field{border-left:1px solid var(--line)}
+.search-field label{font-size:11.5px;font-weight:600;color:var(--primary);letter-spacing:.03em;text-transform:uppercase}
+.search-field input{border:none;outline:none;font-family:'Inter';font-size:15px;color:var(--ink);background:transparent;margin-top:3px;width:100%}
+.search-field input::placeholder{color:#9CABB2}
+.search-go{width:52px;height:52px;border-radius:11px;background:var(--secondary);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .22s var(--ease)}
+.search-go:hover{background:#427494;transform:scale(1.04)}
+.search-tags{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;align-items:center}
+.search-tags span{font-size:13px;color:var(--muted)}
+.tag{font-size:13px;color:var(--primary);background:#fff;border:1px solid var(--line);padding:5px 13px;border-radius:100px;transition:all .2s;cursor:pointer}
+.tag:hover{border-color:var(--secondary);color:var(--secondary)}
+
+/* ============ TRUST STRIP ============ */
+.trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}
+.trust-inner{display:flex;align-items:center;justify-content:space-between;padding:34px 0;gap:30px;flex-wrap:wrap}
+.trust-item{display:flex;flex-direction:column;gap:2px}
+.trust-num{font-family:'Montserrat';font-weight:700;font-size:30px;color:var(--primary);letter-spacing:-.02em}
+.trust-label{font-size:13.5px;color:var(--muted)}
+
+/* ============ SECTION ============ */
+section{padding:104px 0}
+.sec-head{max-width:580px;margin-bottom:56px}
+.sec-tag{font-size:13px;font-weight:600;color:var(--secondary);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+.sec-head h2{font-size:clamp(28px,3.4vw,42px);font-weight:700;color:var(--primary);line-height:1.12}
+.sec-head p{font-size:17px;color:var(--muted);margin-top:16px;line-height:1.6}
+.center{margin-left:auto;margin-right:auto;text-align:center}
+
+/* ============ HOW IT WORKS ============ */
+.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.how-col{background:var(--warm);border:1px solid rgba(46,66,75,.05);border-radius:20px;padding:44px 40px}
+.how-col.alt{background:#fff;border-color:var(--line)}
+.how-col h3{font-size:14px;font-weight:600;color:var(--secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:30px;display:flex;align-items:center;gap:10px}
+.how-col h3 svg{width:18px;height:18px}
+.step{display:flex;gap:18px;padding:18px 0}
+.step+.step{border-top:1px solid rgba(46,66,75,.07)}
+.step-n{width:38px;height:38px;flex-shrink:0;border-radius:10px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:'Montserrat';font-weight:700;font-size:15px;color:var(--primary)}
+.how-col.alt .step-n{background:var(--warm)}
+.step-body h4{font-family:'Inter';font-size:16px;font-weight:600;color:var(--primary)}
+.step-body p{font-size:14px;color:var(--muted);margin-top:3px}
+
+/* ============ REVIEWS ============ */
+.reviews{background:linear-gradient(180deg,#fff, var(--warm) 140%)}
+.rev-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.rev-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:30px;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.rev-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.rev-dir{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--secondary);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.rev-dir svg{width:15px;height:15px}
+.stars{display:flex;gap:3px;margin-bottom:14px}
+.stars svg{width:16px;height:16px;color:#E8B23A}
+.rev-text{font-size:15.5px;color:var(--primary);line-height:1.6}
+.rev-foot{display:flex;align-items:center;gap:13px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+.avatar{width:44px;height:44px;border-radius:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Montserrat';font-weight:700;font-size:16px;color:#fff}
+.rev-meta strong{display:block;font-size:14.5px;font-weight:600;color:var(--primary)}
+.rev-meta span{font-size:13px;color:var(--muted)}
+.verified{margin-left:auto;display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--secondary);background:rgba(78,134,170,.08);padding:5px 11px;border-radius:100px}
+.verified svg{width:13px;height:13px}
+
+/* ============ OPPORTUNITIES ============ */
+.opp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.opp-card{border:1px solid var(--line);border-radius:18px;padding:26px;transition:all .3s var(--ease);cursor:pointer;background:#fff}
+.opp-card:hover{border-color:var(--light);box-shadow:var(--shadow-md);transform:translateY(-3px)}
+.opp-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.opp-logo{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Montserrat';font-weight:700;font-size:17px;color:#fff}
+.opp-type{font-size:12px;font-weight:600;color:var(--secondary);background:rgba(78,134,170,.08);padding:5px 11px;border-radius:100px}
+.opp-card h3{font-size:18px;font-weight:600;color:var(--primary);font-family:'Inter';margin-bottom:6px}
+.opp-co{font-size:14px;color:var(--muted)}
+.opp-foot{display:flex;align-items:center;gap:16px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.opp-foot .m{display:flex;align-items:center;gap:6px}
+.opp-foot svg{width:14px;height:14px;color:#9CABB2}
+
+/* ============ COMPANIES ============ */
+.co-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.co-card{border:1px solid var(--line);border-radius:16px;padding:26px;text-align:center;transition:all .3s var(--ease);background:#fff}
+.co-card:hover{border-color:var(--light);box-shadow:var(--shadow-sm);transform:translateY(-2px)}
+.co-logo{width:56px;height:56px;border-radius:14px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-family:'Montserrat';font-weight:700;font-size:20px;color:#fff}
+.co-card h4{font-family:'Inter';font-size:15.5px;font-weight:600;color:var(--primary)}
+.co-card .co-sec{font-size:13px;color:var(--muted);margin-top:2px}
+.co-rating{display:inline-flex;align-items:center;gap:5px;margin-top:14px;font-size:13px;font-weight:600;color:var(--primary)}
+.co-rating svg{width:14px;height:14px;color:#E8B23A}
+.co-open{font-size:12.5px;color:var(--secondary);margin-top:10px;font-weight:500}
+
+/* ============ CTA FINAL ============ */
+.cta-final{padding:0 0 104px}
+.cta-box{background:var(--primary);border-radius:28px;padding:80px 64px;position:relative;overflow:hidden;text-align:center}
+.cta-box::before{content:"";position:absolute;top:-120px;right:-60px;width:420px;height:420px;background:radial-gradient(circle,rgba(78,134,170,.4),transparent 65%);border-radius:50%}
+.cta-box::after{content:"";position:absolute;bottom:-160px;left:-80px;width:380px;height:380px;background:radial-gradient(circle,rgba(198,218,226,.18),transparent 65%);border-radius:50%}
+.cta-box h2{position:relative;font-size:clamp(28px,3.6vw,44px);font-weight:700;color:#fff;line-height:1.1;max-width:640px;margin:0 auto}
+.cta-box p{position:relative;color:var(--light);font-size:17px;margin:18px auto 36px;max-width:480px}
+.cta-box .hero-ctas{position:relative;justify-content:center}
+.btn-on-dark-primary{background:#fff;color:var(--primary)}
+.btn-on-dark-primary:hover{background:var(--light);transform:translateY(-1px)}
+.btn-on-dark-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.25)}
+.btn-on-dark-ghost:hover{border-color:#fff;background:rgba(255,255,255,.06)}
+
+/* ============ FOOTER ============ */
+footer{border-top:1px solid var(--line);padding:64px 0 40px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.foot-brand p{font-size:14px;color:var(--muted);margin-top:18px;max-width:280px;line-height:1.6}
+.foot-col h5{font-family:'Montserrat';font-size:13px;font-weight:600;color:var(--primary);text-transform:uppercase;letter-spacing:.04em;margin-bottom:18px}
+.foot-col a{display:block;font-size:14px;color:var(--muted);margin-bottom:11px;transition:color .2s}
+.foot-col a:hover{color:var(--secondary)}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);flex-wrap:wrap;gap:12px}
+
+/* ============ TOAST ============ */
+.toast-wrap{position:fixed;bottom:28px;right:28px;z-index:200;display:flex;flex-direction:column;gap:12px}
+.toast{display:flex;align-items:center;gap:12px;background:var(--primary);color:#fff;padding:14px 18px;border-radius:12px;box-shadow:var(--shadow-lg);font-size:14px;font-weight:500;transform:translateX(140%);opacity:0;transition:all .45s var(--ease);min-width:260px}
+.toast.show{transform:translateX(0);opacity:1}
+.toast .ti{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.toast .ti svg{width:16px;height:16px;color:#9FE0B8}
+
+/* ============ REVEAL ============ */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:900px){
+  .how-grid,.rev-grid,.opp-grid{grid-template-columns:1fr}
+  .co-grid{grid-template-columns:repeat(2,1fr)}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .nav-links a.link{display:none}
+  .searchbar{flex-direction:column;align-items:stretch}
+  .search-field+.search-field{border-left:none;border-top:1px solid var(--line)}
+  .search-go{width:100%;height:48px}
+  .hero{padding:128px 0 72px}
+  .cta-box{padding:56px 28px}
+  section{padding:72px 0}
+}
+@media(max-width:560px){
+  .wrap{padding:0 20px}
+  .co-grid{grid-template-columns:1fr}
+  .nav-cta .btn.btn-ghost{display:none}
+  .toast-wrap{left:20px;right:20px;bottom:20px}
+  .toast{min-width:0}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header id="hdr">
+  <div class="wrap">
+    <nav>
+      <a href="#" class="brand">
+        <svg class="logo-mark" viewBox="0 0 32 32" fill="none">
+          <path d="M16.8 2.4c0 6.6 6.9 8.9 6.9 16.1a7.7 7.7 0 0 1-15.4 0c0-3.7 1.7-5.4 3.3-8.4.6 2.9 2.2 3.3 2.9 1.4 1.1-2.9 2.3-5 2.3-9.1Z" fill="#2E424B"/>
+          <path d="M16.4 12.6c.1 3.5 3.4 4.2 3.4 7.4a3.8 3.8 0 0 1-7.6 0c0-1.9 1-2.8 1.9-4.3.8 1.6 2 1 2.3-3.1Z" fill="#4E86AA"/>
+        </svg>
+          <circle cx="25" cy="22" r="4" fill="#C6DAE2"/>
+          <path d="M16 9.5L9 19M16 9.5L23 19M9.5 22h13" stroke="#2E424B" stroke-width="1.6" stroke-linecap="round" opacity=".55"/>
+        </svg>
+        IGNEA
+      </a>
+      <div class="nav-links">
+        <a class="link" href="#como">Como funciona</a>
+        <a class="link" href="#avaliacoes">Avaliações</a>
+        <a class="link" href="#oportunidades">Oportunidades</a>
+        <a class="link" href="#empresas">Empresas</a>
+      </div>
+      <div class="nav-cta">
+        <a class="btn btn-ghost btn-sm" href="#" onclick="igNav('welcome');return false;">Entrar</a>
+        <a class="btn btn-primary btn-sm" href="#" onclick="igNav('welcome');return false;">Criar perfil</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="wrap">
+    <div class="hero-inner">
+      <span class="eyebrow reveal"><span class="dot"></span> Avaliações verificadas dos dois lados</span>
+      <h1 class="headline reveal">Encontre profissionais e empresas com <span class="accent">histórico comprovado.</span></h1>
+      <p class="subheadline reveal">Conectamos empresas e profissionais através de oportunidades reais, avaliações verificadas e experiências compartilhadas.</p>
+      <div class="hero-ctas reveal">
+        <a class="btn btn-primary" href="#" onclick="igNav('professional','signup');return false;">Buscar oportunidades</a>
+        <a class="btn btn-ghost" href="#" onclick="igNav('welcome');return false;">Criar perfil</a>
+      </div>
+
+      <!-- SEARCH -->
+      <div class="searchbar reveal">
+        <label class="search-field">
+          <span>O que você procura</span>
+          <input type="text" placeholder="Cargo, habilidade ou empresa">
+        </label>
+        <label class="search-field">
+          <span>Onde</span>
+          <input type="text" placeholder="Cidade ou remoto">
+        </label>
+        <button class="search-go" onclick="igNav('professional','signup')" aria-label="Buscar">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </button>
+      </div>
+      <div class="search-tags reveal">
+        <span>Em alta:</span>
+        <span class="tag" onclick="igNav('professional','signup')">Desenvolvimento</span>
+        <span class="tag" onclick="igNav('professional','signup')">Design</span>
+        <span class="tag" onclick="igNav('professional','signup')">Produto</span>
+        <span class="tag" onclick="igNav('professional','signup')">Remoto</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRUST ============ -->
+<div class="trust">
+  <div class="wrap">
+    <div class="trust-inner">
+      <div class="trust-item reveal"><span class="trust-num">12k+</span><span class="trust-label">Profissionais verificados</span></div>
+      <div class="trust-item reveal"><span class="trust-num">2.4k</span><span class="trust-label">Empresas ativas</span></div>
+      <div class="trust-item reveal"><span class="trust-num">38k</span><span class="trust-label">Avaliações reais</span></div>
+      <div class="trust-item reveal"><span class="trust-num">96%</span><span class="trust-label">Recomendam a plataforma</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section id="como">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <div class="sec-tag">Como funciona</div>
+      <h2>Simples para os dois lados</h2>
+      <p>Sem ruído, sem burocracia. Apenas conexões reais entre quem contrata e quem trabalha.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-col reveal" style="background-color: rgb(255, 255, 255)">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="#4E86AA" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg> Para empresas</h3>
+        <div class="step"><div class="step-n">1</div><div class="step-body"><h4>Crie uma vaga</h4><p>Publique oportunidades em minutos com um fluxo claro.</p></div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-body"><h4>Receba candidaturas</h4><p>Acompanhe candidatos com histórico e avaliações reais.</p></div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-body"><h4>Encontre profissionais</h4><p>Decida com confiança a partir de experiências comprovadas.</p></div></div>
+      </div>
+      <div class="how-col alt reveal">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="#4E86AA" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M5 21v-1a7 7 0 0114 0v1"/></svg> Para profissionais</h3>
+        <div class="step"><div class="step-n">1</div><div class="step-body"><h4>Crie seu perfil</h4><p>Monte um perfil completo, otimizado para o celular.</p></div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-body"><h4>Candidate-se</h4><p>Aplique para oportunidades reais com um toque.</p></div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-body"><h4>Construa histórico</h4><p>Acumule avaliações que comprovam seu valor.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="reviews" id="avaliacoes">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag">Históricos e avaliações</div>
+      <h2>Experiências reais, dos dois lados</h2>
+      <p>Transparência que constrói confiança. Empresas avaliam profissionais e profissionais avaliam empresas.</p>
+    </div>
+    <div class="rev-grid">
+      <div class="rev-card reveal">
+        <div class="rev-dir"><svg viewBox="0 0 24 24" fill="none" stroke="#4E86AA" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg> Empresa avaliando profissional</div>
+        <div class="stars">★★★★★</div>
+        <p class="rev-text">Entrega impecável e comunicação clara do início ao fim. Trouxe soluções que nem tínhamos mapeado. Contrataríamos novamente sem hesitar.</p>
+        <div class="rev-foot">
+          <div class="avatar" style="background:#2E424B">RT</div>
+          <div class="rev-meta"><strong>Rafael Torres</strong><span>Head de Engenharia · Nuvex</span></div>
+          <span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#4E86AA" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Verificado</span>
+        </div>
+      </div>
+      <div class="rev-card reveal">
+        <div class="rev-dir"><svg viewBox="0 0 24 24" fill="none" stroke="#4E86AA" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M5 21v-1a7 7 0 0114 0v1"/></svg> Profissional avaliando empresa</div>
+        <div class="stars">★★★★★</div>
+        <p class="rev-text">Processo seletivo transparente e respeitoso. Cada etapa foi clara, com feedback honesto. Senti que minha experiência importava de verdade.</p>
+        <div class="rev-foot">
+          <div class="avatar" style="background:#4E86AA">CM</div>
+          <div class="rev-meta"><strong>Camila Moraes</strong><span>Product Designer</span></div>
+          <span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#4E86AA" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Verificado</span>
+        </div>
+      </div>
+      <div class="rev-card reveal">
+        <div class="rev-dir"><svg viewBox="0 0 24 24" fill="none" stroke="#4E86AA" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg> Empresa avaliando profissional</div>
+        <div class="stars">★★★★★</div>
+        <p class="rev-text">Profissionalismo acima da média. Cumpriu todos os prazos e elevou a qualidade do time. Um histórico que fala por si.</p>
+        <div class="rev-foot">
+          <div class="avatar" style="background:#6B7E86">AL</div>
+          <div class="rev-meta"><strong>Ana Lima</strong><span>CEO · Fluxo Studio</span></div>
+          <span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#4E86AA" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Verificado</span>
+        </div>
+      </div>
+      <div class="rev-card reveal">
+        <div class="rev-dir"><svg viewBox="0 0 24 24" fill="none" stroke="#4E86AA" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M5 21v-1a7 7 0 0114 0v1"/></svg> Profissional avaliando empresa</div>
+        <div class="stars">★★★★★</div>
+        <p class="rev-text">Cultura forte e expectativas alinhadas desde a primeira conversa. A descrição da vaga correspondeu exatamente à realidade do trabalho.</p>
+        <div class="rev-foot">
+          <div class="avatar" style="background:#2E424B">DS</div>
+          <div class="rev-meta"><strong>Diego Souza</strong><span>Backend Developer</span></div>
+          <span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#4E86AA" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Verificado</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPPORTUNITIES ============ -->
+<section id="oportunidades">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag">Oportunidades em destaque</div>
+      <h2>Vagas selecionadas para você</h2>
+    </div>
+    <div class="opp-grid">
+      <div class="opp-card reveal">
+        <div class="opp-top"><div class="opp-logo" style="background:#2E424B">N</div><span class="opp-type">Remoto</span></div>
+        <h3>Senior Frontend Engineer</h3>
+        <div class="opp-co">Nuvex Tecnologia</div>
+        <div class="opp-foot">
+          <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg> R$ 14–18k</span>
+          <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Integral</span>
+        </div>
+      </div>
+      <div class="opp-card reveal">
+        <div class="opp-top"><div class="opp-logo" style="background:#4E86AA">F</div><span class="opp-type">Híbrido</span></div>
+        <h3>Product Designer</h3>
+        <div class="opp-co">Fluxo Studio</div>
+        <div class="opp-foot">
+          <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg> R$ 10–14k</span>
+          <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Integral</span>
+        </div>
+      </div>
+      <div class="opp-card reveal">
+        <div class="opp-top"><div class="opp-logo" style="background:#6B7E86">O</div><span class="opp-type">Presencial</span></div>
+        <h3>Data Analyst Pleno</h3>
+        <div class="opp-co">Órbita Dados</div>
+        <div class="opp-foot">
+          <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg> R$ 8–11k</span>
+          <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Integral</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPANIES ============ -->
+<section id="empresas" style="background:var(--warm)">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <div class="sec-tag">Empresas em destaque</div>
+      <h2>Quem está contratando agora</h2>
+    </div>
+    <div class="co-grid">
+      <div class="co-card reveal"><div class="co-logo" style="background:#2E424B">N</div><h4>Nuvex</h4><div class="co-sec">Tecnologia</div><div class="co-rating"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .6-5.3 4.6L18.4 21 12 17.3 5.6 21l1.7-7.3L2 9.1l7-.6z"/></svg> 4.9</div><div class="co-open">7 vagas abertas</div></div>
+      <div class="co-card reveal"><div class="co-logo" style="background:#4E86AA">F</div><h4>Fluxo Studio</h4><div class="co-sec">Design & Produto</div><div class="co-rating"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .6-5.3 4.6L18.4 21 12 17.3 5.6 21l1.7-7.3L2 9.1l7-.6z"/></svg> 4.8</div><div class="co-open">3 vagas abertas</div></div>
+      <div class="co-card reveal"><div class="co-logo" style="background:#6B7E86">O</div><h4>Órbita Dados</h4><div class="co-sec">Analytics</div><div class="co-rating"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .6-5.3 4.6L18.4 21 12 17.3 5.6 21l1.7-7.3L2 9.1l7-.6z"/></svg> 4.7</div><div class="co-open">5 vagas abertas</div></div>
+      <div class="co-card reveal"><div class="co-logo" style="background:#2E424B">V</div><h4>Vértice</h4><div class="co-sec">Fintech</div><div class="co-rating"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .6-5.3 4.6L18.4 21 12 17.3 5.6 21l1.7-7.3L2 9.1l7-.6z"/></svg> 4.9</div><div class="co-open">9 vagas abertas</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA FINAL ============ -->
+<section class="cta-final">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <h2>Crie seu perfil ou publique sua primeira oportunidade</h2>
+      <p>Junte-se a uma comunidade construída sobre transparência e histórico real.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-on-dark-primary" href="#" onclick="igNav('welcome');return false;">Criar perfil</a>
+        <a class="btn btn-on-dark-ghost" href="#" onclick="igNav('company','signup');return false;">Publicar oportunidade</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#" class="brand">
+          <svg class="logo-mark" viewBox="0 0 32 32" fill="none">
+            <path d="M16.8 2.4c0 6.6 6.9 8.9 6.9 16.1a7.7 7.7 0 0 1-15.4 0c0-3.7 1.7-5.4 3.3-8.4.6 2.9 2.2 3.3 2.9 1.4 1.1-2.9 2.3-5 2.3-9.1Z" fill="#2E424B"/>
+            <path d="M16.4 12.6c.1 3.5 3.4 4.2 3.4 7.4a3.8 3.8 0 0 1-7.6 0c0-1.9 1-2.8 1.9-4.3.8 1.6 2 1 2.3-3.1Z" fill="#4E86AA"/>
+          </svg>
+          </svg> IGNEA
+        </a>
+        <p>Conectamos empresas e profissionais através de oportunidades reais e histórico comprovado.</p>
+      </div>
+      <div class="foot-col"><h5>Plataforma</h5><a href="#">Oportunidades</a><a href="#">Empresas</a><a href="#">Como funciona</a><a href="#">Avaliações</a></div>
+      <div class="foot-col"><h5>Empresa</h5><a href="#">Sobre</a><a href="#">Carreiras</a><a href="#">Blog</a><a href="#">Contato</a></div>
+      <div class="foot-col"><h5>Legal</h5><a href="#">Termos</a><a href="#">Privacidade</a><a href="#">Cookies</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 IGNEA. Todos os direitos reservados.</span>
+      <span>Feito com transparência.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script>
+// Bridge: notify the prototype shell (parent) which screen to open.
+// Falls back to a toast when the landing is opened standalone.
+function igNav(target, mode){
+  try{
+    if(window.parent && window.parent !== window){
+      window.parent.postMessage({type:'ignea-nav', target:target, mode:mode||'signup'}, '*');
+      return;
+    }
+  }catch(e){}
+  toast('Abrindo cadastro','Continue para criar sua conta.');
+}
+// Nav scroll state
+const hdr=document.getElementById('hdr');
+window.addEventListener('scroll',()=>hdr.classList.toggle('scrolled',window.scrollY>10));
+
+// Reveal on scroll (staggered within groups)
+const io=new IntersectionObserver((es)=>{es.forEach((e,i)=>{if(e.isIntersecting){const el=e.target;const sibs=[...el.parentElement.querySelectorAll('.reveal')];const idx=sibs.indexOf(el);el.style.transitionDelay=(idx*70)+'ms';el.classList.add('in');io.unobserve(el);}});},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// Toasts (Linear-inspired)
+function toast(title,msg){
+  const w=document.getElementById('toasts');
+  const t=document.createElement('div');t.className='toast';
+  t.innerHTML='<div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="#9FE0B8" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></div><div><strong>'+title+'</strong>'+(msg?'<div style="font-weight:400;color:#C6DAE2;font-size:13px">'+msg+'</div>':'')+'</div>';
+  w.appendChild(t);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),500);},3400);
+}
+</script>
+</body>
+</html>
